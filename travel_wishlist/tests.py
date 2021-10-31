@@ -27,3 +27,40 @@ class TestVisitedPage(TestCase):
         response = self.client.get(reverse('places_visited'))
         self.assertTemplateUsed(response, 'travel_wishlist/visited.html')
         self.assertContains(response, 'You have not visited any places yet.')
+
+class VisitedList(TestCase):
+    fixtures = ['test_places']
+    
+    def test_visited_list_shows_visited_palces(self):
+        response = self.client.get(reverse('places_visited'))
+        self.assertContains(response, 'San Francisco')
+        self.assertContains(response, 'Moab')
+        self.assertNotContains(response, 'New York')
+        self.assertNotContains(response, 'Tokyo')
+
+class TestAddNewPlace(TestCase):
+    def test_add_new_unvisited_place(self):
+        add_place_url = reverse('place_list')
+        new_place_data = {'name': 'Tokyo', 'visited': False}
+        response = self.client.post(add_place_url, new_place_data, follow=True)
+        self.assertTemplateUsed(response, 'travel_wishlist/wishlist.html')
+        response_places = response.context['places']
+        self.assertEqual(1, len(response_places))
+        tokyo_from_response = response_places[0]
+        tokyo_from_db = Place.objects.get(name='Tokyo', visited=False)
+        self.assertEqual(tokyo_from_db, tokyo_from_response)
+
+class TestVisitPlace(TestCase):
+    fixtures = ['test_places']
+    
+    def test_visit_place(self):
+        visit_place_url = reverse('place_was_visited', args=(2,))
+        response = self.client.post(visit_place_url, follow=True)
+
+        self.assertTemplateUsed(response, 'travel_wishlist/wishlist.html')
+
+        self.assertNotContains(response, 'New York')
+        self.assertContains(response, 'Tokyo')
+
+        new_york = Place.objects.get(pk=2)
+        self.assertTrue(new_york.visited)
