@@ -22,3 +22,8 @@ class TestWishList(TestCase):
         self.assertNotContains(response, 'San Francisco')
         self.assertNotContains(response, 'Moab')      
 
+class TestVisitedPage(TestCase):
+    def test_visited_page_shows_empty_list_message_for_empty_db(self):
+        response = self.client.get(reverse('places_visited'))
+        self.assertTemplateUsed(response, 'travel_wishlist/visited.html')
+        self.assertContains(response, 'You have not visited any places yet.')
