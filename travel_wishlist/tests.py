@@ -64,3 +64,8 @@ class TestVisitPlace(TestCase):
 
         new_york = Place.objects.get(pk=2)
         self.assertTrue(new_york.visited)
+
+    def test_non_existent_place(self):
+        visit_nonexistent_place_url = reverse('place_was_visited', args=(1234,))
+        response = self.client.post(visit_nonexistent_place_url, follow=True)
+        self.assertEqual(404, response.status_code)
