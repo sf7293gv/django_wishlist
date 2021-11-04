@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Place
 from .forms import NewPlaceForm
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 
 @login_required
@@ -35,11 +36,23 @@ def place_was_visited(request, place_pk):
     if request.method == 'POST':
         # place = Place.objects.get(pk=place_pk)
         place = get_object_or_404(Place, pk=place_pk)
-        place.visited = True
-        place.save()
+        if place.user == request.user:
+            place.visited = True
+            place.save()
+        else:
+            return HttpResponseForbidden()
     return redirect('place_list')
 
 @login_required
 def place_details(request, place_pk):
     place = get_object_or_404(Place, pk=place_pk)
     return render(request, 'travel_wishlist/place_details.html', {'place': place})
+
+@login_required
+def delete_place(request, place_pk):
+    place = get_object_or_404(Place, pk=place_pk)
+    if place.user == request.user:
+        place.delete()
+        return redirect('place_list')
+    else:
+        return HttpResponseForbidden()
