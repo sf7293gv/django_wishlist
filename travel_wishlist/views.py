@@ -68,11 +68,11 @@ def place_details(request, place_pk):
         # if visited show form, else no form
         if place.visited:
             review_form = TripReviewForm(instance=place)
-            return render(request, 'travel_wishlist/place_details.html', {'place': place, 'review_form': review_form})
+            return render(request, 'travel_wishlist/place_detail.html', {'place': place, 'review_form': review_form})
         else:
-            return render(request, 'travel_wishlist/place_details.html', {'place': place})
+            return render(request, 'travel_wishlist/place_detail.html', {'place': place})
 
-    return render(request, 'travel_wishlist/place_details.html', {'place': place})
+    return render(request, 'travel_wishlist/place_detail.html', {'place': place})
 
 @login_required
 def delete_place(request, place_pk):
