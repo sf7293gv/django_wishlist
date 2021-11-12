@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+
+# command to run proxy
+#cloud_sql_proxy -instances=django-wishlist-app:us-central1:wishlist-db=tcp:5432
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
