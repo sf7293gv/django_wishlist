@@ -135,9 +135,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'www', 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 GS_STATIC_FILE_BUCKET = 'django-wishlist-app.appspot.com'
-STATIC_URL = 'https://storage.cloud.google.com/{GS_STATIC_FILE_BUCKET}/static/'
+STATIC_URL = f'https://storage.cloud.google.com/{GS_STATIC_FILE_BUCKET}/static/'
+
+GS_BUCKET_NAME = 'user-images-uploaded-323'
+MEDIA_URL = f'https://storage.cloud.google.com/{GS_BUCKET_NAME}/media/'

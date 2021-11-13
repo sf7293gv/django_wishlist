@@ -5,3 +5,4 @@ __pycache__
 db.sqlite3
 cloud_sql_proxy
 www/
+travel_credentials.json
