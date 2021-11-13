@@ -24,7 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-smecoyi-td)8plch22+y+1zu$^7g*lkt7ig8q7#c8tcofyx-ja'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+if os.getenv('GAE_INSTANCE'):
+    DEBUG = False
+else:
+    DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -87,7 +91,13 @@ DATABASES = {
 }
 
 if not os.getenv('GAE_INSTANCE'):
-    DATABASES['default']['HOST'] = '127.0.0.1'
+    # DATABASES['default']['HOST'] = '127.0.0.1'
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -139,13 +149,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-GS_STATIC_FILE_BUCKET = 'django-wishlist-app.appspot.com'
-STATIC_URL = f'https://storage.cloud.google.com/{GS_STATIC_FILE_BUCKET}/static/'
+if os.getenv('GAE_INSTANCE'):
+    GS_STATIC_FILE_BUCKET = 'django-wishlist-app.appspot.com'
+    STATIC_URL = f'https://storage.cloud.google.com/{GS_STATIC_FILE_BUCKET}/static/'
 
-GS_BUCKET_NAME = 'user-images-uploaded-323'
-MEDIA_URL = f'https://storage.cloud.google.com/{GS_BUCKET_NAME}/media/'
+    GS_BUCKET_NAME = 'user-images-uploaded-323'
+    MEDIA_URL = f'https://storage.cloud.google.com/{GS_BUCKET_NAME}/media/'
 
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
-from google.oauth2 import service_account
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file('travel_credentials.json')
+    from google.oauth2 import service_account
+    GS_CREDENTIALS = service_account.Credentials.from_service_account_file('travel_credentials.json')
+
+else:
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
