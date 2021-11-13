@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+import travel_wishlist.admin_views as admin_views
 
 urlpatterns = [
     path('', views.place_list, name='place_list'),
