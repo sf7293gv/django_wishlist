@@ -25,10 +25,11 @@ SECRET_KEY = 'django-insecure-smecoyi-td)8plch22+y+1zu$^7g*lkt7ig8q7#c8tcofyx-ja
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-if os.getenv('GAE_INSTANCE'):
-    DEBUG = False
-else:
-    DEBUG = True
+# if os.getenv('GAE_INSTANCE'):
+#     DEBUG = False
+# else:
+#     DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -136,31 +137,41 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 # Specify a location to copy static files to when running python manage.py collectstatic
+# STATIC_ROOT = os.path.join(BASE_DIR, 'www', 'static')
+
+# # STATIC_URL = '/static/'
+
+# # Default primary key field type
+# # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# # MEDIA_URL = '/media/'
+
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# if os.getenv('GAE_INSTANCE'):
+#     GS_STATIC_FILE_BUCKET = 'django-wishlist-app.appspot.com'
+#     STATIC_URL = f'https://storage.cloud.google.com/{GS_STATIC_FILE_BUCKET}/static/'
+
+#     GS_BUCKET_NAME = 'user-images-uploaded-323'
+#     MEDIA_URL = f'https://storage.cloud.google.com/{GS_BUCKET_NAME}/media/'
+
+#     DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+
+#     from google.oauth2 import service_account
+#     GS_CREDENTIALS = service_account.Credentials.from_service_account_file('travel_credentials.json')
+
+# else:
+#     STATIC_URL = '/static/'
+#     MEDIA_URL = '/media/'
+
+
+
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'www', 'static')
-
-# STATIC_URL = '/static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# MEDIA_URL = '/media/'
-
+MEDIA_URL = '/media/'
+# Where in the file system to save user-uploaded files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-if os.getenv('GAE_INSTANCE'):
-    GS_STATIC_FILE_BUCKET = 'django-wishlist-app.appspot.com'
-    STATIC_URL = f'https://storage.cloud.google.com/{GS_STATIC_FILE_BUCKET}/static/'
-
-    GS_BUCKET_NAME = 'user-images-uploaded-323'
-    MEDIA_URL = f'https://storage.cloud.google.com/{GS_BUCKET_NAME}/media/'
-
-    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-
-    from google.oauth2 import service_account
-    GS_CREDENTIALS = service_account.Credentials.from_service_account_file('travel_credentials.json')
-
-else:
-    STATIC_URL = '/static/'
-    MEDIA_URL = '/media/'
+GS_STATIC_FILE_BUCKET = 'django-wishlist-app.appspot.com'
+STATIC_URL = f'https://storage.cloud.google.com/{GS_STATIC_FILE_BUCKET}/static/'
